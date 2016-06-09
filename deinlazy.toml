@@ -118,7 +118,3 @@ repo = 'soramugi/auto-ctags.vim'
 on_if = 1
 hook_source = 'source ~/.vim/rc/plugins/auto-ctags.rc.vim'
 
-[[plugins]]
-repo = 'tpope/vim-fugitive'
-on_if = 1
-
