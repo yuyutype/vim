@@ -24,6 +24,11 @@ function! s:vimfiler_my_settings() abort "{{{
   nmap <buffer> p <Plug>(vimfiler_quick_look)
   nmap <buffer> <Tab> <Plug>(vimfiler_switch_to_other_window)
 
+  noremap <silent><buffer><expr> v
+    \ vimfiler#do_switch_action('vsplit')
+  nnoremap <silent><buffer><expr> s
+    \ vimfiler#do_switch_action('split')
+
   " Migemo search.
   if !empty(unite#get_filters('matcher_migemo'))
     nnoremap <silent><buffer><expr> /  line('$') > 10000 ?  'g/' :

@@ -32,12 +32,12 @@ hook_add = '''
   nnoremap <silent> ;b
         \ :<C-u>Unite -buffer-name=build`tabpagenr()` -no-quit build<CR>
   nnoremap <silent> ;o
-        \ :<C-u>Unite outline -no-start-insert -resume<CR>
+        \ :<C-u>Unite outline -no-start-insert<CR>
   nnoremap <silent> <C-k>
         \ :<C-u>Unite change jump<CR>
   nnoremap <silent> ;g
         \ :<C-u>Unite grep -buffer-name=grep`tabpagenr()`
-        \ -auto-preview -no-split -no-empty -resume<CR>
+        \ -auto-preview -no-split -no-empty<CR>
   nnoremap <silent> ;r
         \ :<C-u>Unite -buffer-name=register
         \ -default-action=append register history/yank<CR>
