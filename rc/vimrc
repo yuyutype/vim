@@ -67,13 +67,13 @@ hi Comment ctermfg=2
 hi Directory ctermfg=2
 
 " not space tab
-set noexpandtab 
-inoremap <CR> <CR>x<BS>
-nnoremap o ox<BS>
-nnoremap O Ox<BS>
+" set noexpandtab 
+" inoremap <CR> <CR>x<BS>
+" nnoremap o ox<BS>
+" nnoremap O Ox<BS>
 
 " only space tab
-" set expandtab
+set expandtab
 
 set tabstop=4 shiftwidth=4 softtabstop=0 smartindent smarttab autoindent
 set number
