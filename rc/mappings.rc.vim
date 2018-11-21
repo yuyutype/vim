@@ -15,10 +15,9 @@ nnoremap <silent> <Tab>      :wincmd w<CR>
 nnoremap <silent><expr> q winnr('$') != 1 ? ':<C-u>close<CR>' : ""
 "}}}
 
-" e: Change basic commands "{{{
-" The prefix key.
-nnoremap [Alt]   <Nop>
-xnoremap [Alt]   <Nop>
-nmap    e  [Alt]
-xmap    e  [Alt]
+" Better x
+nnoremap x "_x
 
+if exists(':tnoremap')
+  tnoremap   <ESC>      <C-\><C-n>
+endif
