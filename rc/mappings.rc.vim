@@ -21,3 +21,5 @@ nnoremap x "_x
 if exists(':tnoremap')
   tnoremap   <ESC>      <C-\><C-n>
 endif
+
+set conceallevel=2 concealcursor=niv

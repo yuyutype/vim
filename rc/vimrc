@@ -78,14 +78,3 @@ set expandtab
 set tabstop=4 shiftwidth=4 softtabstop=0 smartindent smarttab autoindent
 set number
 
-" setting for ludovicchabant/vim-gutentags
-let g:gutentags_modules = ['ctags', 'gtags_cscope']
-let g:gutentags_cache_dir = expand('~/.vim/gutentags')
-let g:gutentags_exclude = ['*.css', '*.html', '*.js', '*.json', '*.xml',
-                          \ '*.phar', '*.ini', '*.rst', '*.md',
-                          \ '*vendor/*/test*', '*vendor/*/Test*',
-                          \ '*vendor/*/fixture*', '*vendor/*/Fixture*',
-                          \ '*var/cache*', '*var/log*']
-let g:gutentags_auto_add_gtags_cscope = 0
-set statusline+=%{gutentags#statusline()}
-" let g:gutentags_trace = 1

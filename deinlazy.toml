@@ -77,8 +77,14 @@ depends = ['neosnippet-snippets', 'context_filetype.vim']
 on_event = 'InsertCharPre'
 on_ft = 'snippet'
 hook_source = '''
-  imap <silent>L     <Plug>(neosnippet_jump_or_expand)
-  smap <silent>L     <Plug>(neosnippet_jump_or_expand)
+"  imap <silent>L     <Plug>(neosnippet_jump_or_expand)
+"  smap <silent>L     <Plug>(neosnippet_jump_or_expand)
+  imap <expr><TAB>
+    \ pumvisible() ? "\<C-n>" :
+    \ neosnippet#expandable_or_jumpable() ?
+    \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+  smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+    \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
   xmap <silent>L     <Plug>(neosnippet_expand_target)
   let g:neosnippet#enable_snipmate_compatibility = 1
   let g:neosnippet#enable_completed_snippet = 1
@@ -137,6 +143,7 @@ repo = 'Shougo/context_filetype.vim'
 
 [[plugins]]
 repo = 'Shougo/deol.nvim'
+on_source = ['denite.nvim']
 depends = 'denite.nvim'
 hook_add = '''
   nnoremap <silent> N :<C-u>call deol#new({
@@ -145,32 +152,32 @@ hook_add = '''
   nnoremap <silent> [Window]D  :<C-u>call deol#kill_editor()<CR>
 '''
 hook_source = '''
-  let g:deol#prompt_pattern = '\w*%'
-  " Set to $PATH.
-  let s:bin = dein#get('vim-themis').rtp . '/bin'
-  function! s:split_envpath(path) abort
-    let delimiter = has('win32') ? ';' : ':'
-    if stridx(a:path, '\' . delimiter) < 0
-      return split(a:path, delimiter)
-    endif
-    let split = split(a:path, '\\\@<!\%(\\\\\)*\zs' . delimiter)
-    return map(split,'substitute(v:val, ''\\\([\\'
-          \ . delimiter . ']\)'', "\\1", "g")')
-  endfunction
-  function! s:join_envpath(list, orig_path, add_path) abort
-    let delimiter = has('win32') ? ';' : ':'
-    return (stridx(a:orig_path, '\' . delimiter) < 0
-          \ && stridx(a:add_path, delimiter) < 0) ?
-          \   join(a:list, delimiter) :
-          \   join(map(copy(a:list),
-          \        "substitute(v:path, ',\\|\\\\,\\@=', '\\\\\\0', 'g')"),
-          \        delimiter)
-  endfunction
-  let $PATH = s:join_envpath(
-        \ dein#util#_uniq(insert(
-        \    s:split_envpath($PATH), s:bin)), $PATH, s:bin)
-  let $THEMIS_HOME = dein#get('vim-themis').rtp
-  unlet s:bin
+"  let g:deol#prompt_pattern = '\w*%'
+"  " Set to $PATH.
+"  let s:bin = dein#get('vim-themis').rtp . '/bin'
+"  function! s:split_envpath(path) abort
+"    let delimiter = has('win32') ? ';' : ':'
+"    if stridx(a:path, '\' . delimiter) < 0
+"      return split(a:path, delimiter)
+"    endif
+"    let split = split(a:path, '\\\@<!\%(\\\\\)*\zs' . delimiter)
+"    return map(split,'substitute(v:val, ''\\\([\\'
+"          \ . delimiter . ']\)'', "\\1", "g")')
+"  endfunction
+"  function! s:join_envpath(list, orig_path, add_path) abort
+"    let delimiter = has('win32') ? ';' : ':'
+"    return (stridx(a:orig_path, '\' . delimiter) < 0
+"          \ && stridx(a:add_path, delimiter) < 0) ?
+"          \   join(a:list, delimiter) :
+"          \   join(map(copy(a:list),
+"          \        "substitute(v:path, ',\\|\\\\,\\@=', '\\\\\\0', 'g')"),
+"          \        delimiter)
+"  endfunction
+"  let $PATH = s:join_envpath(
+"        \ dein#util#_uniq(insert(
+"        \    s:split_envpath($PATH), s:bin)), $PATH, s:bin)
+"  let $THEMIS_HOME = dein#get('vim-themis').rtp
+"  unlet s:bin
   autocmd FileType deol call s:on_deol()
   function! s:on_deol() abort
     nnoremap <buffer><silent> [Space]gc :<C-u>call deol#send('git commit')<CR>
@@ -205,3 +212,15 @@ hook_source = '''
 let g:fruzzy#sortonempty = 0
 '''
 hook_post_update = 'call fruzzy#install()'
+
+[[plugins]]
+repo = 'tyru/open-browser.vim'
+hook_add = '''
+nnoremap <silent> mo :<C-u>PrevimOpen<CR>
+'''
+
+[[plugins]]
+repo = 'kannokanno/previm'
+# on_ft = ['markdown', 'rst', 'mkd']
+on_cmd = 'PrevimOpen'
+depends = 'open-browser.vim'
