@@ -18,8 +18,22 @@ nnoremap <silent><expr> q winnr('$') != 1 ? ':<C-u>close<CR>' : ""
 " Better x
 nnoremap x "_x
 
+" Sticky shift in English keyboard.
+" Sticky key.
+inoremap <expr> ;  vimrc#sticky_func()
+cnoremap <expr> ;  vimrc#sticky_func()
+snoremap <expr> ;  vimrc#sticky_func()
+
+" Easy escape.
+inoremap jj           <ESC>
+cnoremap <expr> j
+      \ getcmdline()[getcmdpos()-2] ==# 'j' ? "\<BS>\<C-c>" : 'j'
+
+inoremap j<Space>     j
+
+" Better <C-]>
+nnoremap <C-]> g<C-]>
+
 if exists(':tnoremap')
   tnoremap   <ESC>      <C-\><C-n>
 endif
-
-set conceallevel=2 concealcursor=niv

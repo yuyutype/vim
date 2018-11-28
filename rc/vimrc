@@ -77,4 +77,7 @@ set expandtab
 
 set tabstop=4 shiftwidth=4 softtabstop=0 smartindent smarttab autoindent
 set number
+colorscheme tango2
 
+" conceallevel
+set conceallevel=2 concealcursor=niv

@@ -1,0 +1,94 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+function LightlineTags()
+    return '%{gutentags#statusline("[Generating\ tags...]")}'
+endfunction
+function! LLAle()
+	let l:count = ale#statusline#Count(bufnr(''))
+	let l:errors = l:count.error + l:count.style_error
+	let l:warnings = l:count.warning + l:count.style_warning
+	return l:count.total == 0 ? 'OK' : 'E:' . l:errors . ' W:' . l:warnings
+	endfunction
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'readonly', 'filename', 'modified' ] ],
+      \   'right': [ [ 'lineinfo' ],
+	  \              [ 'ale' ],
+      \              [ 'percent' ],
+      \              [ 'fileformat', 'fileencoding', 'filetype' ],
+      \              [ 'tags' ] ]
+      \ },
+      \ 'component_function': {
+      \   'ale': 'LLAle'
+	  \ },
+      \ 'component_expand': {
+      \   'tags': 'LightlineTags'
+      \ },
+      \ }
+'''
+
+[[plugins]]
+repo = 'flazz/vim-colorschemes'
+
+[[plugins]]
+repo = 'roxma/vim-hug-neovim-rpc'
+on_if = '!has("nvim")'
+hook_add = '''
+let g:vim_markdown_fenced_languages = []
+'''
+
+[[plugins]]
+repo = 'roxma/nvim-yarp'
+
+[[plugins]]
+repo = 'Shougo/deoppet.nvim'
+
+[[plugins]]
+repo = 'skywind3000/gutentags_plus'
+hook_add = '''
+let g:gutentags_auto_add_gtags_cscope = 0
+'''
+
+[[plugins]]
+repo = 'ludovicchabant/vim-gutentags'
+hook_add = '''
+" let g:gutentags_trace = 1
+let g:gutentags_file_list_command = 'rg --files'
+let g:gutentags_modules = ['ctags', 'gtags_cscope']
+let g:gutentags_cache_dir = expand('~/.vim/gutentags')
+let g:utentags_ctags_exclude = ['*.css', '*.html', '*.js', '*.json', '*.xml',
+                          \ '*.phar', '*.ini', '*.rst', '*.md',
+                          \ '*vendor/*/test*', '*vendor/*/Test*',
+                          \ '*vendor/*/fixture*', '*vendor/*/Fixture*',
+                          \ '*var/cache*', '*var/log*']
+augroup MyGutentagsStatusLineRefresher
+    autocmd!
+    autocmd User GutentagsUpdating call lightline#update()
+    autocmd User GutentagsUpdated call lightline#update()
+augroup END
+'''
+
+[[plugins]]
+repo = 'godlygeek/tabular'
+
+[[plugins]]
+repo = 'joker1007/vim-markdown-quote-syntax'
+
+[[plugins]]
+repo = 'rcmdnk/vim-markdown'
+hook_add = '''
+let g:vim_markdown_conceal = 0
+set nofoldenable
+'''
+
+[[plugins]]
+repo = 'w0rp/ale'
