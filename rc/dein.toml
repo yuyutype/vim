@@ -42,9 +42,6 @@ repo = 'flazz/vim-colorschemes'
 [[plugins]]
 repo = 'roxma/vim-hug-neovim-rpc'
 on_if = '!has("nvim")'
-hook_add = '''
-let g:vim_markdown_fenced_languages = []
-'''
 
 [[plugins]]
 repo = 'roxma/nvim-yarp'
@@ -87,6 +84,7 @@ repo = 'joker1007/vim-markdown-quote-syntax'
 repo = 'rcmdnk/vim-markdown'
 hook_add = '''
 let g:vim_markdown_conceal = 0
+let g:vim_markdown_fenced_languages = []
 set nofoldenable
 '''
 

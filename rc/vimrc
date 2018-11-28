@@ -81,3 +81,6 @@ colorscheme tango2
 
 " conceallevel
 set conceallevel=2 concealcursor=niv
+
+" Always display statusline.
+set laststatus=2
