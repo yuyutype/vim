@@ -84,3 +84,7 @@ set conceallevel=2 concealcursor=niv
 
 " Always display statusline.
 set laststatus=2
+
+" Show <TAB> and <CR>
+set list
+set listchars=tab:▸\ ,trail:-,precedes:«,nbsp:%

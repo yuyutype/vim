@@ -20,9 +20,9 @@ nnoremap x "_x
 
 " Sticky shift in English keyboard.
 " Sticky key.
-inoremap <expr> ;  vimrc#sticky_func()
-cnoremap <expr> ;  vimrc#sticky_func()
-snoremap <expr> ;  vimrc#sticky_func()
+"inoremap <expr> ;  vimrc#sticky_func()
+"cnoremap <expr> ;  vimrc#sticky_func()
+"snoremap <expr> ;  vimrc#sticky_func()
 
 " Easy escape.
 inoremap jj           <ESC>
