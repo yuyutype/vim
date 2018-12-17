@@ -8,32 +8,32 @@ repo = 'Shougo/neosnippet-snippets'
 repo = 'itchyny/lightline.vim'
 hook_add = '''
 function LightlineTags()
-    return '%{gutentags#statusline("[Generating\ tags...]")}'
+  return '%{gutentags#statusline("[Generating\ tags...]")}'
 endfunction
 function! LLAle()
-	let l:count = ale#statusline#Count(bufnr(''))
-	let l:errors = l:count.error + l:count.style_error
-	let l:warnings = l:count.warning + l:count.style_warning
-	return l:count.total == 0 ? 'OK' : 'E:' . l:errors . ' W:' . l:warnings
-	endfunction
+  let l:count = ale#statusline#Count(bufnr(''))
+  let l:errors = l:count.error + l:count.style_error
+  let l:warnings = l:count.warning + l:count.style_warning
+  return l:count.total == 0 ? 'OK' : 'E:' . l:errors . ' W:' . l:warnings
+  endfunction
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'readonly', 'filename', 'modified' ] ],
-      \   'right': [ [ 'lineinfo' ],
-	  \              [ 'ale' ],
-      \              [ 'percent' ],
-      \              [ 'fileformat', 'fileencoding', 'filetype' ],
-      \              [ 'tags' ] ]
-      \ },
-      \ 'component_function': {
-      \   'ale': 'LLAle'
-	  \ },
-      \ 'component_expand': {
-      \   'tags': 'LightlineTags'
-      \ },
-      \ }
+  \ 'colorscheme': 'wombat',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ],
+  \             [ 'readonly', 'filename', 'modified' ] ],
+  \   'right': [ [ 'lineinfo' ],
+  \              [ 'ale' ],
+  \              [ 'percent' ],
+  \              [ 'fileformat', 'fileencoding', 'filetype' ],
+  \              [ 'tags' ] ]
+  \ },
+  \ 'component_function': {
+  \   'ale': 'LLAle'
+  \ },
+  \ 'component_expand': {
+  \   'tags': 'LightlineTags'
+  \ },
+  \ }
 '''
 
 [[plugins]]
@@ -62,15 +62,27 @@ hook_add = '''
 let g:gutentags_file_list_command = 'rg --files'
 let g:gutentags_modules = ['ctags', 'gtags_cscope']
 let g:gutentags_cache_dir = expand('~/.vim/gutentags')
-let g:utentags_ctags_exclude = ['*.css', '*.html', '*.js', '*.json', '*.xml',
-                          \ '*.phar', '*.ini', '*.rst', '*.md',
-                          \ '*vendor/*/test*', '*vendor/*/Test*',
-                          \ '*vendor/*/fixture*', '*vendor/*/Fixture*',
-                          \ '*var/cache*', '*var/log*']
+let g:utentags_ctags_exclude = [
+  \ '*.css',
+  \ '*.html',
+  \ '*.js',
+  \ '*.json',
+  \ '*.xml',
+  \ '*.phar',
+  \ '*.ini',
+  \ '*.rst',
+  \ '*.md',
+  \ '*vendor/*/test*',
+  \ '*vendor/*/Test*',
+  \ '*vendor/*/fixture*',
+  \ '*vendor/*/Fixture*',
+  \ '*var/cache*',
+  \'*var/log*'
+  \ ]
 augroup MyGutentagsStatusLineRefresher
-    autocmd!
-    autocmd User GutentagsUpdating call lightline#update()
-    autocmd User GutentagsUpdated call lightline#update()
+  autocmd!
+  autocmd User GutentagsUpdating call lightline#update()
+  autocmd User GutentagsUpdated call lightline#update()
 augroup END
 '''
 
@@ -91,7 +103,20 @@ set nofoldenable
 [[plugins]]
 repo = 'w0rp/ale'
 hook_add = '''
-let g:ale_linters = {'javascript': ['eslint']}
-let g:ale_fixers = {'javascript': ['eslint']}
+" let g:ale_java_javalsp_jar = '~/Work/neovim/java/java-language-server/out/fat-jar.jar'
+let g:ale_java_eclipselsp_path = '~/Work/neovim/java/jdt-language-server'
+let g:ale_completion_enabled = 1
+" let g:ale_java_google_java_format_options = '--aosp'
+
+let g:ale_linters = {
+"   \ 'java': ['javalsp'],
+  \ 'java': ['eclipselsp'],
+  \ 'javascript': ['eslint']
+  \ }
+let g:ale_fixers = {
+"   \ 'java': ['google_java_format'],
+  \ 'javascript': ['eslint']
+  \ }
 let g:ale_fix_on_save = 1
+let g:ale_lint_on_text_changed = 'never'
 '''

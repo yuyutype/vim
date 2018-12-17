@@ -32,11 +32,11 @@ augroup MyAutoCmd
 augroup END
 
 if !has('vim_starting')
-	call dein#call_hook('source')
-	call dein#call_hook('post_source')
+  call dein#call_hook('source')
+  call dein#call_hook('post_source')
 
-	syntax enable
-	filetype plugin indent on
+  syntax enable
+  filetype plugin indent on
 endif
 
 "---------------------------------------------------------------------------
@@ -67,7 +67,7 @@ hi Comment ctermfg=2
 hi Directory ctermfg=2
 
 " not space tab
-" set noexpandtab 
+" set noexpandtab
 " inoremap <CR> <CR>x<BS>
 " nnoremap o ox<BS>
 " nnoremap O Ox<BS>
@@ -79,6 +79,9 @@ set tabstop=4 shiftwidth=4 softtabstop=0 smartindent smarttab autoindent
 set number
 colorscheme tango2
 
+autocmd FileType java setlocal noexpandtab
+autocmd FileType vim setlocal tabstop=2 shiftwidth=2
+
 " conceallevel
 set conceallevel=2 concealcursor=niv
 
@@ -88,3 +91,5 @@ set laststatus=2
 " Show <TAB> and <CR>
 set list
 set listchars=tab:▸\ ,trail:-,precedes:«,nbsp:%
+
+set binary noeol

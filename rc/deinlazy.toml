@@ -7,8 +7,8 @@ on_source = ['denite.nvim']
 repo = 'Shougo/defx.nvim'
 hook_add = '''
 nnoremap <silent>   [Space]f
-" \ :<C-u>Defx -listed -resume -buffer-name=tab`tabpagenr()`<CR>
-\ :<C-u>Defx -split=vertical -winwidth=35 -direction=topleft<CR>
+"       \ :<C-u>Defx -listed -resume -buffer-name=tab`tabpagenr()`<CR>
+       \ :<C-u>Defx -split=vertical -winwidth=35 -direction=topleft<CR>
 '''
 hook_source = '''
 autocmd MyAutoCmd FileType defx call s:defx_my_settings()
@@ -77,9 +77,9 @@ depends = ['neosnippet-snippets', 'context_filetype.vim']
 on_event = 'InsertCharPre'
 on_ft = 'snippet'
 hook_source = '''
-  imap <silent>L     <Plug>(neosnippet_jump_or_expand)
-  smap <silent>L     <Plug>(neosnippet_jump_or_expand)
-  xmap <silent>L     <Plug>(neosnippet_expand_target)
+  imap <silent><C-k>     <Plug>(neosnippet_jump_or_expand)
+  smap <silent><C-k>     <Plug>(neosnippet_jump_or_expand)
+  xmap <silent><C-k>     <Plug>(neosnippet_expand_target)
 
 "  imap <expr><TAB>
 "    \ pumvisible() ? "\<C-n>" :
@@ -127,7 +127,6 @@ hook_add = '''
   nnoremap <silent><expr> tp  &filetype == 'help' ?
         \ ":\<C-u>pop\<CR>" : ":\<C-u>Denite -mode=normal jump\<CR>"
   nnoremap <silent> [Window]n :<C-u>Denite dein<CR>
-  nnoremap <silent> [Window]g :<C-u>Denite ghq<CR>
   nnoremap <silent> ;g :<C-u>Denite -buffer-name=search
         \ -no-empty -mode=normal grep<CR>
   nnoremap <silent> n :<C-u>Denite -buffer-name=search
@@ -135,7 +134,7 @@ hook_add = '''
   nnoremap <silent> ft :<C-u>Denite filetype<CR>
   nnoremap <silent> <C-t> :<C-u>Denite
         \ -select=`tabpagenr()-1` -mode=normal deol:zsh<CR>
-  nnoremap <silent> <C-k> :<C-u>Denite -mode=normal change jump<CR>
+  nnoremap <silent> <C-j> :<C-u>Denite -mode=normal change jump<CR>
   nnoremap <silent> ;;
         \ :<C-u>Denite command command_history<CR>
 '''
