@@ -89,4 +89,5 @@ set laststatus=2
 set list
 set listchars=tab:▸\ ,trail:-,precedes:«,nbsp:%
 
-set binary noeol
+" ファイルの最後に改行が無くてもそのままにする
+set nofixeol
