@@ -121,7 +121,7 @@ let g:ale_fix_on_save = 1
 [[plugins]]
 repo = 'autozimu/LanguageClient-neovim'
 rev = 'next'
-build = ['bash install.sh']
+build = 'bash install.sh'
 hook_add = '''
     let g:LanguageClient_serverCommands = {
         \ 'java': ['/usr/local/bin/jdtls'],
