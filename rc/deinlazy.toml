@@ -92,7 +92,7 @@ hook_source = '''
 
   " let g:snippets_dir = '~/.vim/snippets/,~/.vim/bundle/snipmate/snippets/'
   let g:neosnippet#snippets_directory = '~/.vim/snippets'
-  autocmd MyAutoCmd CompleteDone * call neosnippet#complete_done()
+"  autocmd MyAutoCmd CompleteDone * call neosnippet#complete_done()
 
   " For conceal markers.
   if has('conceal')
