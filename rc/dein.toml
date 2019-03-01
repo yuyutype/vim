@@ -108,7 +108,7 @@ hook_add = '''
 
 let g:ale_linters = {
   \ 'java': [],
-  \ 'javascript': ['eslint'],
+  \ 'javascript': ['eslint']
   \ }
 let g:ale_lint_on_text_changed = 'never'
 
@@ -126,6 +126,8 @@ build = 'bash install.sh'
 hook_add = '''
     let g:LanguageClient_serverCommands = {
         \ 'java': ['/usr/local/bin/jdtls'],
+        \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+        \ 'typescript': ['/usr/local/bin/javascript-typescript-stdio']
     \ }
     " not stop completion $ & /
     set hidden
@@ -144,4 +146,16 @@ hook_add = '''
     nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
     nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
     nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+'''
+
+[[plugins]]
+repo = 'kristijanhusak/defx-icons'
+hook_add = '''
+let g:defx_icons_enable_syntax_highlight = 1
+let g:defx_icons_column_length = 2
+let g:defx_icons_directory_icon = ''
+let g:defx_icons_mark_icon = '*'
+let g:defx_icons_parent_icon = ''
+let g:defx_icons_default_icon = ''
+let g:defx_icons_directory_symlink_icon = ''
 '''

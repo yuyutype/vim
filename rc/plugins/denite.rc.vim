@@ -32,8 +32,8 @@ call denite#custom#map('insert', '<BS>',
       \ '<denite:smart_delete_char_before_caret>', 'noremap')
 call denite#custom#map('insert', '<C-h>',
       \ '<denite:smart_delete_char_before_caret>', 'noremap')
-call denite#custom#map('insert', ';',
-      \ 'vimrc#sticky_func()', 'expr')
+" call denite#custom#map('insert', ';',
+"       \ 'vimrc#sticky_func()', 'expr')
 
 call denite#custom#alias('source', 'file/rec/git', 'file/rec')
 call denite#custom#var('file/rec/git', 'command',
@@ -59,9 +59,3 @@ call denite#custom#var('menu', 'menus', s:menus)
 call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
       \ [ '.git/', '.ropeproject/', '__pycache__/',
       \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
-
-call denite#custom#action('file', 'test',
-      \ {context -> execute('let g:foo = 1')})
-
-call denite#custom#action('file', 'test2',
-      \ {context -> denite#do_action(context, 'open', context['targets'])})

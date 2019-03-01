@@ -8,7 +8,7 @@ repo = 'Shougo/defx.nvim'
 hook_add = '''
 nnoremap <silent>   [Space]f
 "       \ :<C-u>Defx -listed -resume -buffer-name=tab`tabpagenr()`<CR>
-       \ :<C-u>Defx -split=vertical -winwidth=30 -direction=topleft<CR>
+       \ :<C-u>Defx -resume -buffer-name=tab`tabpagenr()` -columns=icons:filename:type -split=vertical -winwidth=30 -direction=topleft<CR>
 '''
 [plugins.ftplugin]
 defx = '''
