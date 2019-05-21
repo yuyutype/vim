@@ -79,9 +79,6 @@ set tabstop=4 shiftwidth=4 softtabstop=0 smartindent smarttab autoindent
 set number
 colorscheme tango2
 
-autocmd FileType java setlocal noexpandtab
-autocmd FileType vim setlocal tabstop=2 shiftwidth=2
-
 " Always display statusline.
 set laststatus=2
 

@@ -10,3 +10,7 @@ setlocal conceallevel=0
 java = '''
 setlocal noexpandtab
 '''
+
+python = '''
+setlocal fixeol
+'''
