@@ -7,8 +7,15 @@ on_source = ['denite.nvim']
 repo = 'Shougo/defx.nvim'
 hook_add = '''
 nnoremap <silent>   [Space]f
-"       \ :<C-u>Defx -listed -resume -buffer-name=tab`tabpagenr()`<CR>
-       \ :<C-u>Defx -resume -buffer-name=tab`tabpagenr()` -columns=icons:filename:type -split=vertical -winwidth=30 -direction=topleft<CR>
+       \ :<C-u>Defx -listed -resume -buffer-name=tab`tabpagenr()`<CR>
+"       \ :<C-u>Defx -resume -buffer-name=tab`tabpagenr()` -split=vertical -winwidth=30 -direction=topleft<CR>
+'''
+hook_source = '''
+call defx#custom#column('mark', {
+      \ 'directory_icon': '▸',
+      \ 'readonly_icon': '✗',
+      \ 'selected_icon': '✓',
+      \ })
 '''
 [plugins.ftplugin]
 defx = '''
@@ -26,11 +33,11 @@ nnoremap <silent><buffer><expr> m
 nnoremap <silent><buffer><expr> p
 \ defx#do_action('paste')
 nnoremap <silent><buffer><expr> l
-\ defx#do_action('drop')
+\ defx#do_action('open')
 nnoremap <silent><buffer><expr> E
-\ defx#do_action('drop', 'vsplit')
+\ defx#do_action('open', 'vsplit')
 nnoremap <silent><buffer><expr> P
-\ defx#do_action('drop', 'pedit')
+\ defx#do_action('open', 'pedit')
 nnoremap <silent><buffer><expr> K
 \ defx#do_action('new_directory')
 nnoremap <silent><buffer><expr> N
@@ -128,10 +135,12 @@ hook_add = '''
         \ register neoyank<CR>
   nnoremap <silent> [Window]<Space>
         \ :<C-u>Denite file/rec:~/.vim/rc<CR>
-  nnoremap <silent> / :<C-u>Denite -buffer-name=search -auto-highlight
-        \ line<CR>
-  nnoremap <silent> * :<C-u>DeniteCursorWord -buffer-name=search
-        \ -auto-highlight -mode=normal line<CR>
+  nnoremap <expr> / line('$') > 10000 ? '/' :
+  \ ":\<C-u>Denite -buffer-name=search -start-filter line\<CR>"
+  nnoremap <expr> n line('$') > 10000 ? 'n' :
+  \ ":\<C-u>Denite -buffer-name=search -resume -refresh -no-start-filter\<CR>"
+  nnoremap <expr> * line('$') > 10000 ? '*' :
+  \ ":\<C-u>DeniteCursorWord -buffer-name=search line\<CR>"
   nnoremap <silent> [Window]s :<C-u>Denite file/point file/old
         \ -sorters=sorter/rank
         \ `finddir('.git', ';') != '' ? 'file/rec/git' : 'file/rec'`
@@ -140,18 +149,40 @@ hook_add = '''
         \ ":\<C-u>DeniteCursorWord -buffer-name=tag -immediately
         \  tag:include\<CR>"
   nnoremap <silent><expr> tp  &filetype == 'help' ?
-        \ ":\<C-u>pop\<CR>" : ":\<C-u>Denite -mode=normal jump\<CR>"
+        \ ":\<C-u>pop\<CR>" : ":\<C-u>Denite jump\<CR>"
   nnoremap <silent> [Window]n :<C-u>Denite dein<CR>
+  nnoremap <silent> [Window]g :<C-u>Denite ghq<CR>
   nnoremap <silent> ;g :<C-u>Denite -buffer-name=search
-        \ -no-empty -mode=normal grep<CR>
-  nnoremap <silent> n :<C-u>Denite -buffer-name=search
-        \ -resume -mode=normal -refresh<CR>
+        \ -no-empty grep<CR>
   nnoremap <silent> ft :<C-u>Denite filetype<CR>
   nnoremap <silent> <C-t> :<C-u>Denite
-        \ -select=`tabpagenr()-1` -mode=normal deol:zsh<CR>
-  nnoremap <silent> <C-j> :<C-u>Denite -mode=normal change jump<CR>
+        \ -cursor-pos=`tabpagenr()-1` deol:zsh<CR>
+  nnoremap <silent> <C-k> :<C-u>Denite change jump<CR>
+  nnoremap <silent> <C-h> :<C-u>DeniteCursorWord help<CR>
+  nnoremap <silent> [Space]gs :<C-u>Denite gitstatus<CR>
   nnoremap <silent> ;;
         \ :<C-u>Denite command command_history<CR>
+'''
+
+[plugins.ftplugin]
+denite = '''
+" Define mappings
+nnoremap <silent><buffer><expr> <CR>
+\ denite#do_map('do_action')
+nnoremap <silent><buffer><expr> a
+\ denite#do_map('choose_action')
+nnoremap <silent><buffer><expr> d
+\ denite#do_map('do_action', 'delete')
+nnoremap <silent><buffer><expr> p
+\ denite#do_map('do_action', 'preview')
+nnoremap <silent><buffer><expr> q
+\ denite#do_map('quit')
+nnoremap <silent><buffer><expr> '
+\ denite#do_map('quick_move')
+nnoremap <silent><buffer><expr> i
+\ denite#do_map('open_filter_buffer')
+nnoremap <silent><buffer><expr> <Space>
+\ denite#do_map('toggle_select').'j'
 '''
 
 [[plugins]]
