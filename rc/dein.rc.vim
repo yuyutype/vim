@@ -5,10 +5,9 @@ if dein#load_state('~/.vim/dein')
   " Required:
   call dein#begin(expand('~/.vim/dein'))
 
-  let s:toml = '~/.vim/dein.toml'
-  let s:lazy_toml = '~/.vim/deinlazy.toml'
-  call dein#load_toml(s:toml, {'lazy': 0})
-  call dein#load_toml(s:lazy_toml, {'lazy': 1})
+  call dein#load_toml('~/.vim/rc/dein.toml', {'lazy': 0})
+  call dein#load_toml('~/.vim/rc/deinlazy.toml', {'lazy': 1})
+  call dein#load_toml('~/.vim/rc/deinft.toml', {'lazy': 1})
 
 " Let dein manage dein
 " Required:

@@ -1,0 +1,419 @@
+[[plugins]]
+repo = 'Shougo/ddc.vim'
+on_event = 'InsertEnter'
+depends = ['denops.vim']
+hook_source = '''
+call ddc#custom#patch_global('sources', ['nvim-lsp', 'around', 'vsnip'])
+call ddc#custom#patch_global('sourceOptions', {
+     \ '_': {
+     \ 'matchers': ['matcher_head'],
+     \ 'sorters': ['sorter_rank'],
+     \ 'converters': ['converter_remove_overlap'],
+     \ },
+     \ 'around': {'mark': 'A'},
+     \ 'nvim-lsp': {
+     \ 'mark': 'L',
+     \ 'forceCompletionPattern': '\.\w*|:\w*|->\w*',
+     \ },
+     \ })
+
+call ddc#custom#patch_global('sourceParams', {
+     \ 'around': {'maxSize': 50},
+     \ })
+
+inoremap <silent><expr> <TAB>
+     \ ddc#map#pum_visible() ? '<C-n>' :
+     \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
+     \ '<TAB>' : ddc#map#manual_complete()
+inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
+
+call ddc#enable()
+'''
+
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+on_event = 'CursorHold'
+hook_source = '''
+  " Note: for profile
+  "let g:denops#server#deno_args = [
+  "    \ '-q',
+  "    \ '--no-check',
+  "    \ '--unstable',
+  "    \ '-A',
+  "    \ '--inspect',
+  "    \ ]
+  " Use background server
+  "if has('nvim')
+  "  call jobstart([
+  "  \   'deno', 'run', '-A', '--no-check',
+  "  \   g:dein#plugin.path . '/denops/@denops-private/cli.ts',
+  "  \ ], {'detach': v:true})
+  "else
+  "  call job_start([
+  "  \   'deno', 'run', '-A', '--no-check',
+  "  \   g:dein#plugin.path . '/denops/@denops-private/cli.ts',
+  "  \ ], {'stoponexit': ''})
+  "endif
+  "let g:denops_server_addr = '127.0.0.1:32123'
+'''
+
+[[plugins]]
+repo = 'Shougo/ddc-around'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-matcher_head'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-sorter_rank'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-converter_remove_overlap'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-nvim-lsp'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip'
+on_event = 'InsertEnter'
+depends = ['vim-vsnip-integ', 'friendly-snippets']
+hook_add = '''
+imap <expr> <C-j> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>'
+smap <expr> <C-j> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>'
+imap <expr> <C-f> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-f>'
+smap <expr> <C-f> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-f>'
+imap <expr> <C-b> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-b>'
+smap <expr> <C-b> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-b>'
+let g:vsnip_filetypes = {}
+'''
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip-integ'
+
+[[plugins]]
+repo = 'rafamadriz/friendly-snippets'
+
+[[plugins]]
+repo = 'junegunn/fzf'
+
+[[plugins]]
+repo = 'nvim-lua/plenary.nvim'
+
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+on_event = 'TextYankPost'
+on_source = ['denite.nvim']
+
+[[plugins]]
+repo = 'Shougo/defx.nvim'
+hook_add = '''
+nnoremap <silent>   [Space]f
+       \ :<C-u>Defx -listed -resume -buffer-name=tab`tabpagenr()`<CR>
+"       \ :<C-u>Defx -resume -buffer-name=tab`tabpagenr()` -split=vertical -winwidth=30 -direction=topleft<CR>
+'''
+hook_source = '''
+call defx#custom#column('mark', {
+      \ 'directory_icon': '▸',
+      \ 'readonly_icon': '✗',
+      \ 'selected_icon': '✓',
+      \ })
+'''
+[plugins.ftplugin]
+defx = '''
+" Define mappings
+nnoremap <silent><buffer><expr> <CR>
+\ defx#is_directory() ?
+\ defx#do_action('open_or_close_tree') :
+\ defx#do_action('drop')
+nnoremap <silent><buffer><expr> c
+\ defx#do_action('copy')
+nnoremap <silent><buffer><expr> !
+\ defx#do_action('execute_command')
+nnoremap <silent><buffer><expr> m
+\ defx#do_action('move')
+nnoremap <silent><buffer><expr> p
+\ defx#do_action('paste')
+nnoremap <silent><buffer><expr> l
+\ defx#do_action('open')
+nnoremap <silent><buffer><expr> E
+\ defx#do_action('open', 'vsplit')
+nnoremap <silent><buffer><expr> P
+\ defx#do_action('open', 'pedit')
+nnoremap <silent><buffer><expr> K
+\ defx#do_action('new_directory')
+nnoremap <silent><buffer><expr> N
+\ defx#do_action('new_file')
+nnoremap <silent><buffer><expr> M
+\ defx#do_action('new_multiple_files')
+nnoremap <silent><buffer><expr> C
+\ defx#do_action('toggle_columns', 'mark:filename:type:size:time')
+nnoremap <silent><buffer><expr> S
+\ defx#do_action('toggle_sort', 'Time')
+nnoremap <silent><buffer><expr> d
+\ defx#do_action('remove')
+nnoremap <silent><buffer><expr> r
+\ defx#do_action('rename')
+nnoremap <silent><buffer><expr> x
+\ defx#do_action('execute_system')
+nnoremap <silent><buffer><expr> >
+\ defx#do_action('toggle_ignored_files')
+nnoremap <silent><buffer><expr> .
+\ defx#do_action('repeat')
+nnoremap <silent><buffer><expr> yy
+\ defx#do_action('yank_path')
+nnoremap <silent><buffer><expr> h
+\ defx#do_action('cd', ['..'])
+nnoremap <silent><buffer><expr> ~
+\ defx#do_action('cd')
+nnoremap <silent><buffer><expr> \
+\ defx#do_action('cd', getcwd())
+nnoremap <silent><buffer><expr> q
+\ defx#do_action('quit')
+nnoremap <silent><buffer><expr> <Space>
+\ defx#do_action('toggle_select') . 'j'
+nnoremap <silent><buffer><expr> *
+\ defx#do_action('toggle_select_all')
+nnoremap <silent><buffer><expr> j
+\ line('.') == line('$') ? 'gg' : 'j'
+nnoremap <silent><buffer><expr> k
+\ line('.') == 1 ? 'G' : 'k'
+nnoremap <silent><buffer><expr> <C-l>
+\ defx#do_action('redraw')
+nnoremap <silent><buffer><expr> <C-g>
+\ defx#do_action('print')
+nnoremap <silent><buffer><expr> <Tab> winnr('$') != 1 ?
+\ ':<C-u>wincmd w<CR>' :
+\ ':<C-u>Defx -buffer-name=temp -split=vertical<CR>'
+'''
+
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+on_cmd = 'Denite'
+hook_source = 'source ~/.vim/rc/plugins/denite.rc.vim'
+hook_add = '''
+  nnoremap <silent> ;r
+        \ :<C-u>Denite -buffer-name=register
+        \ register neoyank<CR>
+  xnoremap <silent> ;r
+        \ :<C-u>Denite -default-action=replace -buffer-name=register
+        \ register neoyank<CR>
+  nnoremap <silent> [Window]<Space>
+        \ :<C-u>Denite file/rec:~/.vim/rc<CR>
+  nnoremap <expr> / line('$') > 10000 ? '/' :
+  \ ":\<C-u>Denite -buffer-name=search -start-filter line\<CR>"
+  nnoremap <expr> n line('$') > 10000 ? 'n' :
+  \ ":\<C-u>Denite -buffer-name=search -resume -refresh -no-start-filter\<CR>"
+  nnoremap <expr> * line('$') > 10000 ? '*' :
+  \ ":\<C-u>DeniteCursorWord -buffer-name=search line\<CR>"
+  nnoremap <silent> [Window]s :<C-u>Denite file/point file/old
+        \ -sorters=sorter/rank
+        \ `finddir('.git', ';') != '' ? 'file/rec/git' : 'file/rec'`
+        \ file file:new<CR>
+  nnoremap <silent><expr> tt  &filetype == 'help' ?  "g\<C-]>" :
+        \ ":\<C-u>DeniteCursorWord -buffer-name=tag -immediately
+        \  tag:include\<CR>"
+  nnoremap <silent><expr> tp  &filetype == 'help' ?
+        \ ":\<C-u>pop\<CR>" : ":\<C-u>Denite jump\<CR>"
+  nnoremap <silent> [Window]n :<C-u>Denite dein<CR>
+  nnoremap <silent> [Window]g :<C-u>Denite ghq<CR>
+  nnoremap <silent> ;g :<C-u>Denite -buffer-name=search
+        \ -no-empty grep<CR>
+  nnoremap <silent> ft :<C-u>Denite filetype<CR>
+  nnoremap <silent> <C-t> :<C-u>Denite
+        \ -cursor-pos=`tabpagenr()-1` deol:zsh<CR>
+  nnoremap <silent> <C-k> :<C-u>Denite change jump<CR>
+  nnoremap <silent> <C-h> :<C-u>DeniteCursorWord help<CR>
+  nnoremap <silent> [Space]gs :<C-u>Denite gitstatus<CR>
+  nnoremap <silent> ;;
+        \ :<C-u>Denite command command_history<CR>
+'''
+
+[plugins.ftplugin]
+denite = '''
+" Define mappings
+nnoremap <silent><buffer><expr> <CR>
+\ denite#do_map('do_action')
+nnoremap <silent><buffer><expr> a
+\ denite#do_map('choose_action')
+nnoremap <silent><buffer><expr> d
+\ denite#do_map('do_action', 'delete')
+nnoremap <silent><buffer><expr> p
+\ denite#do_map('do_action', 'preview')
+nnoremap <silent><buffer><expr> q
+\ denite#do_map('quit')
+nnoremap <silent><buffer><expr> '
+\ denite#do_map('quick_move')
+nnoremap <silent><buffer><expr> i
+\ denite#do_map('open_filter_buffer')
+nnoremap <silent><buffer><expr> <Space>
+\ denite#do_map('toggle_select').'j'
+'''
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]]
+repo = 'raghur/fruzzy'
+on_source = ['denite.nvim']
+hook_source = '''
+let g:fruzzy#sortonempty = 0
+'''
+hook_post_update = 'call fruzzy#install()'
+
+[[plugins]]
+repo = 'scalameta/nvim-metals'
+on_ft = 'scala'
+hook_source = '''
+lua << EOF
+  local cmd = vim.cmd
+  local function map(mode, lhs, rhs, opts)
+    local options = { noremap = true }
+    if opts then
+      options = vim.tbl_extend("force", options, opts)
+    end
+    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+  end
+  ------------------------------------------------
+  -- global
+  ------------------------------------------------
+  vim.opt_global.completeopt = { "menu", "noinsert", "noselect" }
+  vim.opt_global.shortmess:remove("F"):append("c")
+  ------------------------------------------------
+  -- LSP mapping
+  ------------------------------------------------
+  map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
+  map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
+  map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
+  map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
+  map("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
+  map("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>")
+  map("n", "gf", "<cmd>lua vim.lsp.buf.formatting()<CR>")
+  ------------------------------------------------
+  -- command
+  ------------------------------------------------
+  cmd([[augroup lsp]])
+  cmd([[autocmd!]])
+  cmd([[autocmd FileType scala setlocal omnifunc=v:lua.vim.lsp.omnifunc]])
+  -- Java のLSPも利用する場合はここがコンフリクトする可能性がある
+  cmd([[autocmd FileType java,scala,sbt lua require("metals").initialize_or_attach(metals_config)]])
+  cmd([[augroup end]])
+  ------------------------------------------------
+  -- Metals Settings
+  ------------------------------------------------
+  metals_config = require("metals").bare_config()
+  metals_config.settings = {
+    excludedPackages = { "akka.actor.typed.javadsl" },
+    showImplicitArguments = true,
+    showInferredType = true,
+  }
+EOF
+  " TVP
+  :command TVP  lua require("metals.tvp").toggle_tree_view()
+  :command TVPR lua require("metals.tvp").reveal_in_tree()
+'''
+
+[[plugins]]
+repo = 'neovim/nvim-lspconfig'
+on_event = 'BufEnter'
+hook_source = '''
+lua << EOF
+local nvim_lsp = require('lspconfig')
+local on_attach = function (client, bufnr)
+local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+local opts = { noremap=true, silent=true }
+ buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+ buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+ buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+ buf_set_keymap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+ buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+ buf_set_keymap('n', 'gx', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+ buf_set_keymap('n', 'g[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+ buf_set_keymap('n', 'g]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+end
+
+local lsp_installer = require("nvim-lsp-installer")
+lsp_installer.on_server_ready(function(server)
+ local opts = {}
+ opts.on_attach = on_attach
+ server:setup(opts)
+ vim.cmd [[ do User LspAttachBuffers ]]
+end)
+EOF
+'''
+
+[[plugins]]
+repo ='williamboman/nvim-lsp-installer'
+on_source = 'nvim-lspconfig'
+
+[[plugins]]
+repo = 'matsui54/denops-signature_help'
+on_source = 'ddc.vim'
+hook_source = '''
+call signature_help#enable()
+'''
+
+[[plugins]]
+repo = 'matsui54/denops-popup-preview.vim'
+on_source = 'ddc.vim'
+hook_source = '''
+call popup_preview#enable()
+'''
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+function! LLAle()
+  let l:count = ale#statusline#Count(bufnr(''))
+  let l:errors = l:count.error + l:count.style_error
+  let l:warnings = l:count.warning + l:count.style_warning
+  return l:count.total == 0 ? 'OK' : 'E:' . l:errors . ' W:' . l:warnings
+  endfunction
+let g:lightline = {
+  \ 'colorscheme': 'wombat',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ],
+  \             [ 'readonly', 'filename', 'modified' ] ],
+  \   'right': [ [ 'lineinfo' ],
+  \              [ 'ale' ],
+  \              [ 'percent' ],
+  \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+  \ },
+  \ 'component_function': {
+  \   'ale': 'LLAle'
+  \ },
+  \ }
+'''
+
+[[plugins]]
+repo = 'rust-lang/rust.vim'
+on_ft = 'rust'
+hook_add = '''
+let g:rustfmt_autosave = 1
+'''
+
+[[plugins]]
+repo = 'dense-analysis/ale'
+hook_add = '''
+
+let g:ale_linters = {
+  \ 'java': [],
+  \ 'javascript': ['eslint'],
+  \ 'typescript': ['eslint'],
+  \ 'python': ['flake8'],
+  \ }
+let g:ale_lint_on_text_changed = 'never'
+
+let g:ale_fixers = {
+  \ 'javascript': ['eslint'],
+  \ 'typescript': ['eslint'],
+  \ 'python': ['autopep8', 'black', 'yapf', 'isort']
+  \ }
+
+let g:ale_fix_on_save = 1
+'''

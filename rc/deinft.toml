@@ -1,0 +1,25 @@
+[ftplugin]
+vim = '''
+setlocal tabstop=2 shiftwidth=2
+'''
+
+json = '''
+setlocal conceallevel=0
+'''
+
+java = '''
+setlocal noexpandtab
+'''
+
+scala = '''
+setlocal tabstop=2 shiftwidth=2
+'''
+
+python = '''
+setlocal fixeol
+'''
+
+typescript = '''
+setlocal tabstop=2 shiftwidth=2
+'''
+
