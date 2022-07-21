@@ -1,4 +1,109 @@
 [[plugins]]
+repo = 'Shougo/ddc.vim'
+on_event = 'InsertEnter'
+depends = ['denops.vim']
+hook_source = '''
+call ddc#custom#patch_global('sources', ['nvim-lsp', 'around', 'vsnip'])
+call ddc#custom#patch_global('sourceOptions', {
+     \ '_': {
+     \ 'matchers': ['matcher_head'],
+     \ 'sorters': ['sorter_rank'],
+     \ 'converters': ['converter_remove_overlap'],
+     \ },
+     \ 'around': {'mark': 'A'},
+     \ 'nvim-lsp': {
+     \ 'mark': 'L',
+     \ 'forceCompletionPattern': '\.\w*|:\w*|->\w*',
+     \ },
+     \ })
+
+call ddc#custom#patch_global('sourceParams', {
+     \ 'around': {'maxSize': 50},
+     \ })
+
+inoremap <silent><expr> <TAB>
+     \ ddc#map#pum_visible() ? '<C-n>' :
+     \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
+     \ '<TAB>' : ddc#map#manual_complete()
+inoremap <expr><S-TAB>  ddc#map#pum_visible() ? '<C-p>' : '<C-h>'
+
+call ddc#enable()
+'''
+
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+on_event = 'CursorHold'
+hook_source = '''
+  " Note: for profile
+  "let g:denops#server#deno_args = [
+  "    \ '-q',
+  "    \ '--no-check',
+  "    \ '--unstable',
+  "    \ '-A',
+  "    \ '--inspect',
+  "    \ ]
+  " Use background server
+  "if has('nvim')
+  "  call jobstart([
+  "  \   'deno', 'run', '-A', '--no-check',
+  "  \   g:dein#plugin.path . '/denops/@denops-private/cli.ts',
+  "  \ ], {'detach': v:true})
+  "else
+  "  call job_start([
+  "  \   'deno', 'run', '-A', '--no-check',
+  "  \   g:dein#plugin.path . '/denops/@denops-private/cli.ts',
+  "  \ ], {'stoponexit': ''})
+  "endif
+  "let g:denops_server_addr = '127.0.0.1:32123'
+'''
+
+[[plugins]]
+repo = 'Shougo/ddc-around'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-matcher_head'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-sorter_rank'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-converter_remove_overlap'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-nvim-lsp'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip'
+on_event = 'InsertEnter'
+depends = ['vim-vsnip-integ', 'friendly-snippets']
+hook_add = '''
+imap <expr> <C-j> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>'
+smap <expr> <C-j> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>'
+imap <expr> <C-f> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-f>'
+smap <expr> <C-f> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-f>'
+imap <expr> <C-b> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-b>'
+smap <expr> <C-b> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-b>'
+let g:vsnip_filetypes = {}
+'''
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip-integ'
+
+[[plugins]]
+repo = 'rafamadriz/friendly-snippets'
+
+[[plugins]]
+repo = 'junegunn/fzf'
+
+[[plugins]]
+repo = 'nvim-lua/plenary.nvim'
+
+[[plugins]]
 repo = 'Shougo/neoyank.vim'
 on_event = 'TextYankPost'
 on_source = ['denite.nvim']
@@ -86,43 +191,6 @@ nnoremap <silent><buffer><expr> <Tab> winnr('$') != 1 ?
 '''
 
 [[plugins]]
-repo = 'Shougo/neco-syntax'
-
-[[plugins]]
-repo = 'Shougo/neosnippet.vim'
-depends = ['neosnippet-snippets', 'context_filetype.vim']
-on_event = 'InsertCharPre'
-on_ft = 'snippet'
-hook_source = '''
-  imap <silent><C-k>     <Plug>(neosnippet_jump_or_expand)
-  smap <silent><C-k>     <Plug>(neosnippet_jump_or_expand)
-  xmap <silent><C-k>     <Plug>(neosnippet_expand_target)
-
-"  imap <expr><TAB>
-"    \ pumvisible() ? "\<C-n>" :
-"    \ neosnippet#expandable_or_jumpable() ?
-"    \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-"  smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-"    \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-  let g:neosnippet#enable_snipmate_compatibility = 1
-  let g:neosnippet#enable_completed_snippet = 1
-  let g:neosnippet#expand_word_boundary = 1
-
-  " let g:snippets_dir = '~/.vim/snippets/,~/.vim/bundle/snipmate/snippets/'
-  let g:neosnippet#snippets_directory = '~/.vim/snippets'
-"  autocmd MyAutoCmd CompleteDone * call neosnippet#complete_done()
-
-  " For conceal markers.
-  if has('conceal')
-    set conceallevel=2 concealcursor=niv
-  endif
-'''
-
-[[plugins]]
-repo = 'Shougo/neosnippet-snippets'
-
-[[plugins]]
 repo = 'Shougo/denite.nvim'
 on_cmd = 'Denite'
 hook_source = 'source ~/.vim/rc/plugins/denite.rc.vim'
@@ -189,71 +257,6 @@ nnoremap <silent><buffer><expr> <Space>
 repo = 'Shougo/context_filetype.vim'
 
 [[plugins]]
-repo = 'Shougo/deol.nvim'
-on_source = ['denite.nvim']
-depends = 'denite.nvim'
-hook_add = '''
-  nnoremap <silent> N :<C-u>call deol#new({
-    \ 'command': 'zsh', 'edit': v:true})<CR>
-  nnoremap <silent> [Space]s :<C-u>Deol zsh -edit<CR>
-  nnoremap <silent> [Window]D  :<C-u>call deol#kill_editor()<CR>
-'''
-hook_source = '''
-"  let g:deol#prompt_pattern = '\w*%'
-"  " Set to $PATH.
-"  let s:bin = dein#get('vim-themis').rtp . '/bin'
-"  function! s:split_envpath(path) abort
-"    let delimiter = has('win32') ? ';' : ':'
-"    if stridx(a:path, '\' . delimiter) < 0
-"      return split(a:path, delimiter)
-"    endif
-"    let split = split(a:path, '\\\@<!\%(\\\\\)*\zs' . delimiter)
-"    return map(split,'substitute(v:val, ''\\\([\\'
-"          \ . delimiter . ']\)'', "\\1", "g")')
-"  endfunction
-"  function! s:join_envpath(list, orig_path, add_path) abort
-"    let delimiter = has('win32') ? ';' : ':'
-"    return (stridx(a:orig_path, '\' . delimiter) < 0
-"          \ && stridx(a:add_path, delimiter) < 0) ?
-"          \   join(a:list, delimiter) :
-"          \   join(map(copy(a:list),
-"          \        "substitute(v:path, ',\\|\\\\,\\@=', '\\\\\\0', 'g')"),
-"          \        delimiter)
-"  endfunction
-"  let $PATH = s:join_envpath(
-"        \ dein#util#_uniq(insert(
-"        \    s:split_envpath($PATH), s:bin)), $PATH, s:bin)
-"  let $THEMIS_HOME = dein#get('vim-themis').rtp
-"  unlet s:bin
-'''
-[plugins.ftplugin]
-deol = '''
-setlocal nonu
-nnoremap <buffer><silent> [Space]gc :<C-u>call deol#send('git commit')<CR>
-nnoremap <buffer><silent> [Space]gA :<C-u>call deol#send('git commit --amend')<CR>
-'''
-
-[[plugins]]
-repo = 'Shougo/neco-vim'
-on_ft = 'vim'
-
-[[plugins]]
-repo = 'Shougo/neoinclude.vim'
-
-[[plugins]]
-repo = 'zchee/deoplete-zsh'
-on_ft = ['zsh', 'sh']
-
-[[plugins]]
-repo = 'Shougo/deoplete.nvim'
-depends = 'context_filetype.vim'
-on_event = 'InsertEnter'
-hook_source = '''
-source ~/.vim/rc/plugins/deoplete.rc.vim
-call deoplete#enable()
-'''
-
-[[plugins]]
 repo = 'raghur/fruzzy'
 on_source = ['denite.nvim']
 hook_source = '''
@@ -262,13 +265,155 @@ let g:fruzzy#sortonempty = 0
 hook_post_update = 'call fruzzy#install()'
 
 [[plugins]]
-repo = 'tyru/open-browser.vim'
-hook_add = '''
-nnoremap <silent> mo :<C-u>PrevimOpen<CR>
+repo = 'scalameta/nvim-metals'
+on_ft = 'scala'
+hook_source = '''
+lua << EOF
+  local cmd = vim.cmd
+  local function map(mode, lhs, rhs, opts)
+    local options = { noremap = true }
+    if opts then
+      options = vim.tbl_extend("force", options, opts)
+    end
+    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+  end
+  ------------------------------------------------
+  -- global
+  ------------------------------------------------
+  vim.opt_global.completeopt = { "menu", "noinsert", "noselect" }
+  vim.opt_global.shortmess:remove("F"):append("c")
+  ------------------------------------------------
+  -- LSP mapping
+  ------------------------------------------------
+  map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
+  map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
+  map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
+  map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
+  map("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
+  map("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>")
+  map("n", "gf", "<cmd>lua vim.lsp.buf.formatting()<CR>")
+  ------------------------------------------------
+  -- command
+  ------------------------------------------------
+  cmd([[augroup lsp]])
+  cmd([[autocmd!]])
+  cmd([[autocmd FileType scala setlocal omnifunc=v:lua.vim.lsp.omnifunc]])
+  -- Java のLSPも利用する場合はここがコンフリクトする可能性がある
+  cmd([[autocmd FileType java,scala,sbt lua require("metals").initialize_or_attach(metals_config)]])
+  cmd([[augroup end]])
+  ------------------------------------------------
+  -- Metals Settings
+  ------------------------------------------------
+  metals_config = require("metals").bare_config()
+  metals_config.settings = {
+    excludedPackages = { "akka.actor.typed.javadsl" },
+    showImplicitArguments = true,
+    showInferredType = true,
+  }
+EOF
+  " TVP
+  :command TVP  lua require("metals.tvp").toggle_tree_view()
+  :command TVPR lua require("metals.tvp").reveal_in_tree()
 '''
 
 [[plugins]]
-repo = 'kannokanno/previm'
-# on_ft = ['markdown', 'rst', 'mkd']
-on_cmd = 'PrevimOpen'
-depends = 'open-browser.vim'
+repo = 'neovim/nvim-lspconfig'
+on_event = 'BufEnter'
+hook_source = '''
+lua << EOF
+local nvim_lsp = require('lspconfig')
+local on_attach = function (client, bufnr)
+local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+local opts = { noremap=true, silent=true }
+ buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+ buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+ buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+ buf_set_keymap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+ buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+ buf_set_keymap('n', 'gx', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+ buf_set_keymap('n', 'g[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+ buf_set_keymap('n', 'g]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+end
+
+local lsp_installer = require("nvim-lsp-installer")
+lsp_installer.on_server_ready(function(server)
+ local opts = {}
+ opts.on_attach = on_attach
+ server:setup(opts)
+ vim.cmd [[ do User LspAttachBuffers ]]
+end)
+EOF
+'''
+
+[[plugins]]
+repo ='williamboman/nvim-lsp-installer'
+on_source = 'nvim-lspconfig'
+
+[[plugins]]
+repo = 'matsui54/denops-signature_help'
+on_source = 'ddc.vim'
+hook_source = '''
+call signature_help#enable()
+'''
+
+[[plugins]]
+repo = 'matsui54/denops-popup-preview.vim'
+on_source = 'ddc.vim'
+hook_source = '''
+call popup_preview#enable()
+'''
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+function! LLAle()
+  let l:count = ale#statusline#Count(bufnr(''))
+  let l:errors = l:count.error + l:count.style_error
+  let l:warnings = l:count.warning + l:count.style_warning
+  return l:count.total == 0 ? 'OK' : 'E:' . l:errors . ' W:' . l:warnings
+  endfunction
+let g:lightline = {
+  \ 'colorscheme': 'wombat',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ],
+  \             [ 'readonly', 'filename', 'modified' ] ],
+  \   'right': [ [ 'lineinfo' ],
+  \              [ 'ale' ],
+  \              [ 'percent' ],
+  \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+  \ },
+  \ 'component_function': {
+  \   'ale': 'LLAle'
+  \ },
+  \ }
+'''
+
+[[plugins]]
+repo = 'rust-lang/rust.vim'
+on_ft = 'rust'
+hook_add = '''
+let g:rustfmt_autosave = 1
+'''
+
+[[plugins]]
+repo = 'dense-analysis/ale'
+hook_add = '''
+
+let g:ale_linters = {
+  \ 'java': [],
+  \ 'javascript': ['eslint'],
+  \ 'typescript': ['eslint'],
+  \ 'python': ['flake8'],
+  \ }
+let g:ale_lint_on_text_changed = 'never'
+
+let g:ale_fixers = {
+  \ 'javascript': ['eslint'],
+  \ 'typescript': ['eslint'],
+  \ 'python': ['autopep8', 'black', 'yapf', 'isort']
+  \ }
+
+let g:ale_fix_on_save = 1
+'''
